@@ -15,6 +15,8 @@ def seo_bot():
     # असली यूजर जैसा दिखने के लिए User-Agent
     chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36")
 
+    # Chromium का सही रास्ता बताना ज़रूरी है
+    chrome_options.binary_location = "/usr/bin/chromium"
     driver = webdriver.Chrome(options=chrome_options)
 
     try:
