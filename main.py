@@ -23,7 +23,7 @@ def seo_bot():
         time.sleep(random.randint(3, 5))
 
         # 2. कीवर्ड सर्च करना (यहाँ अपनी साइट का नाम लिखें)
-        search_query = "Aman Civil Engineering AutoCAD" # अपना कीवर्ड यहाँ बदलें
+        search_query = "https://Officialleo.netlify.app" # अपना कीवर्ड यहाँ बदलें
         search_box = driver.find_element(By.NAME, "q")
         search_box.send_keys(search_query)
         search_box.send_keys(Keys.RETURN)
@@ -31,7 +31,7 @@ def seo_bot():
 
         # 3. अपनी वेबसाइट का लिंक ढूंढना और क्लिक करना
         # यहाँ 'yourwebsite.com' की जगह अपनी असली साइट का URL डालें
-        my_site_link = driver.find_element(By.PARTIAL_LINK_TEXT, "aman-civil") 
+        my_site_link = driver.find_element(By.PARTIAL_LINK_TEXT, "https://Officialleo.netlify.app") 
         my_site_link.click()
         print("Website found and clicked! ✅")
 
