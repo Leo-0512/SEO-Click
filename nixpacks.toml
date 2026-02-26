@@ -1,10 +1,16 @@
+[variables]
+# यह लाइन बहुत ज़रूरी है, यह ब्राउज़र को गायब होने से बचाएगी
+PLAYWRIGHT_BROWSERS_PATH = "/app/.cache/ms-playwright"
+
 [phases.setup]
 nixPkgs = ["python311"]
 
 [phases.install]
+# यहाँ हम लाइब्रेरी, ब्राउज़र और ज़रूरी सिस्टम फाइल्स एक साथ इंस्टॉल करेंगे
 cmds = [
     "pip install -r requirements.txt",
-    "PLAYWRIGHT_BROWSERS_PATH=/app/.cache/ms-playwright playwright install chromium --with-deps"
+    "playwright install chromium",
+    "playwright install-deps"
 ]
 
 [phases.start]
