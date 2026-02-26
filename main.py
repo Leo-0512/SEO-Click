@@ -10,28 +10,30 @@ def seo_bot():
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     
-    # Railway के सिस्टम में Chromium यहाँ होता है
+    # Railway के सिस्टम में Chromium और Driver यहाँ होते हैं
     chrome_options.binary_location = "/usr/bin/chromium-browser"
 
     try:
-        # हम सीधा सिस्टम के ड्राइवर का इस्तेमाल करेंगे
+        # यहाँ हम किसी मैनेजर का इंतज़ार नहीं करेंगे, सीधा सिस्टम फाइल उठाएंगे
+        # Railway Nixpacks में chromedriver इसी पाथ पर आता है
         service = Service(executable_path="/usr/bin/chromedriver")
         driver = webdriver.Chrome(service=service, options=chrome_options)
         
-        print("Leo Bot Online! 🚀 Connecting to Google...")
+        print("Leo Bot: System Connected Successfully! 🚀")
         driver.get("https://www.google.com")
-        print(f"Success! Page Title: {driver.title}")
+        print(f"Verified: Google is Open. Title: {driver.title}")
         
-        # यहाँ अपना सर्च लॉजिक
+        # --- आपका कीवर्ड सर्च ---
         search_box = driver.find_element("name", "q")
         search_box.send_keys("Aman Civil Engineering AutoCAD")
         search_box.submit()
         time.sleep(5)
+        print("Search Result Loaded! ✅")
         
         driver.quit()
-        print("Task Finished. Waiting for next cycle... 😴")
+        print("Session Finished. Relaxing... 😴")
     except Exception as e:
-        print(f"Final Error: {e}")
+        print(f"Leo, final error check: {e}")
 
 if __name__ == "__main__":
     while True:
