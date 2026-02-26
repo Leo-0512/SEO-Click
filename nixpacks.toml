@@ -1,16 +1,8 @@
-[variables]
-# ब्राउज़र को प्रोजेक्ट के लोकल फोल्डर में लॉक करना
-PLAYWRIGHT_BROWSERS_PATH = "/app/.playwright-browsers"
-
 [phases.setup]
 nixPkgs = ["python311"]
 
 [phases.install]
-cmds = [
-    "pip install -r requirements.txt",
-    "playwright install chromium --with-deps"
-]
+cmds = ["pip install -r requirements.txt"]
 
 [phases.start]
-# यहाँ हम पाथ को कन्फर्म कर रहे हैं
 cmds = ["python main.py"]
