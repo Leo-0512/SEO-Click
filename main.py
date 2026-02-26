@@ -5,7 +5,7 @@ from playwright.async_api import async_playwright
 async def seo_bot():
     async with async_playwright() as p:
         # ब्राउज़र लॉन्च (Headless mode)
-        browser = await p.chromium.launch(headless=True)
+        browser = await p.chromium.launch(headless=True,args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"])
         context = await browser.new_context(
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
         )
