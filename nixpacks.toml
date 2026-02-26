@@ -1,16 +1,10 @@
-[variables]
-# यह ब्राउज़र को प्रोजेक्ट फोल्डर के अंदर ही रहने पर मजबूर करेगा
-PLAYWRIGHT_BROWSERS_PATH = "0"
-
 [phases.setup]
 nixPkgs = ["python311"]
 
 [phases.install]
-# लाइब्रेरी और ब्राउज़र को सही जगह पर इंस्टॉल करना
 cmds = [
     "pip install -r requirements.txt",
-    "playwright install chromium",
-    "playwright install-deps"
+    "playwright install chromium --with-deps"
 ]
 
 [phases.start]
