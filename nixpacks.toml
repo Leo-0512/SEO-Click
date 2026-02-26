@@ -1,8 +1,10 @@
+[variables]
+PLAYWRIGHT_BROWSERS_PATH = "0"
+
 [phases.setup]
 nixPkgs = ["python311"]
 
 [phases.install]
-# यहाँ हम पहले लाइब्रेरी इंस्टॉल करेंगे, फिर ब्राउज़र और उसकी डिपेंडेंसी
 cmds = [
     "pip install -r requirements.txt",
     "playwright install chromium",
