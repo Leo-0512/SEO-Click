@@ -72,9 +72,11 @@ async def seo_bot():
 
 async def main():
     while True:
+        # अब हम 5 से 10 मिनट के बीच एक विज़िट भेजेंगे
+        # यह आधे घंटे में 1 की जगह 1 घंटे में 4-6 विज़िट कर देगा
         await seo_bot()
-        # गैप को बढ़ा दिया है ताकि गूगल को पैटर्न न मिले
-        wait_next = random.randint(1800, 3600) # 30 min to 1 hour
+        wait_next = random.randint(300, 600) 
+        print(f"⏳ Next visit in {wait_next // 60} minutes...")
         await asyncio.sleep(wait_next)
 
 if __name__ == "__main__":
