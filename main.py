@@ -1,5 +1,6 @@
 import time
 import random
+import os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -10,32 +11,32 @@ def seo_bot():
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     
-    # Railway के सिस्टम में Chromium और Driver यहाँ होते हैं
-    chrome_options.binary_location = "/usr/bin/chromium-browser"
+    # Railway/Nixpacks में ये ही स्टैंडर्ड लोकेशन होती हैं
+    chrome_options.binary_location = "/usr/bin/google-chrome" # या "/usr/bin/chromium"
 
     try:
-        # यहाँ हम किसी मैनेजर का इंतज़ार नहीं करेंगे, सीधा सिस्टम फाइल उठाएंगे
-        # Railway Nixpacks में chromedriver इसी पाथ पर आता है
-        service = Service(executable_path="/usr/bin/chromedriver")
+        # हम सीधा सिस्टम ड्राइवर को कॉल करेंगे
+        # अगर /usr/bin/chromedriver काम न करे तो "chromedriver" लिखें
+        service = Service(executable_path="chromedriver") 
         driver = webdriver.Chrome(service=service, options=chrome_options)
         
-        print("Leo Bot: System Connected Successfully! 🚀")
+        print("🚀 LEO STEALTH SYSTEM: SEO BOT ONLINE!")
         driver.get("https://www.google.com")
-        print(f"Verified: Google is Open. Title: {driver.title}")
+        print(f"✅ Google Connected. Title: {driver.title}")
         
-        # --- आपका कीवर्ड सर्च ---
+        # सर्च लॉजिक
         search_box = driver.find_element("name", "q")
         search_box.send_keys("Aman Civil Engineering AutoCAD")
         search_box.submit()
         time.sleep(5)
-        print("Search Result Loaded! ✅")
+        print("🔍 Search Success! Link finding in progress...")
         
         driver.quit()
-        print("Session Finished. Relaxing... 😴")
     except Exception as e:
-        print(f"Leo, final error check: {e}")
+        print(f"❌ Leo, even after fix: {e}")
 
 if __name__ == "__main__":
     while True:
         seo_bot()
-        time.sleep(random.randint(600, 1200))
+        # 10-15 मिनट का इंतज़ार
+        time.sleep(random.randint(600, 900))
