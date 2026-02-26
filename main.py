@@ -27,7 +27,7 @@ async def seo_bot():
             await page.goto("https://www.google.com")
             
             # 2. कीवर्ड सर्च करना
-            search_query = "Aman Civil Engineering AutoCAD"
+            search_query = "https://officialleo.netlify.app"
             await page.fill('textarea[name="q"]', search_query)
             await page.keyboard.press("Enter")
             await page.wait_for_load_state("networkidle")
