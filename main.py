@@ -1,42 +1,42 @@
-import time
+import asyncio
 import random
-import os
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
+from playwright.async_api import async_playwright
 
-def seo_bot():
-    chrome_options = Options()
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    
-    # Railway/Nixpacks में ये ही स्टैंडर्ड लोकेशन होती हैं
-    chrome_options.binary_location = "/usr/bin/google-chrome" # या "/usr/bin/chromium"
+async def seo_bot():
+    async with async_playwright() as p:
+        # ब्राउज़र लॉन्च करना (Headless mode)
+        browser = await p.chromium.launch(headless=True)
+        context = await browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        )
+        page = await context.new_page()
 
-    try:
-        # हम सीधा सिस्टम ड्राइवर को कॉल करेंगे
-        # अगर /usr/bin/chromedriver काम न करे तो "chromedriver" लिखें
-        service = Service(executable_path="chromedriver") 
-        driver = webdriver.Chrome(service=service, options=chrome_options)
-        
-        print("🚀 LEO STEALTH SYSTEM: SEO BOT ONLINE!")
-        driver.get("https://www.google.com")
-        print(f"✅ Google Connected. Title: {driver.title}")
-        
-        # सर्च लॉजिक
-        search_box = driver.find_element("name", "q")
-        search_box.send_keys("Aman Civil Engineering AutoCAD")
-        search_box.submit()
-        time.sleep(5)
-        print("🔍 Search Success! Link finding in progress...")
-        
-        driver.quit()
-    except Exception as e:
-        print(f"❌ Leo, even after fix: {e}")
+        try:
+            print("🚀 Leo Playwright System: Online!")
+            await page.goto("https://www.google.com")
+            print(f"✅ Page Loaded: {await page.title()}")
+
+            # गूगल सर्च करना
+            await page.fill('textarea[name="q"]', "https://officialleo.netlify.app")
+            await page.keyboard.press("Enter")
+            
+            # रिजल्ट्स का इंतज़ार
+            await page.wait_for_timeout(5000)
+            print("🔍 Search results are up!")
+
+            # यहाँ आपकी वेबसाइट पर क्लिक करने का कोड आएगा
+            
+            await browser.close()
+            print("😴 Cycle finished. Sleeping...")
+        except Exception as e:
+            print(f"❌ Error: {e}")
+            await browser.close()
+
+async def main():
+    while True:
+        await seo_bot()
+        # 10-15 मिनट का गैप
+        await asyncio.sleep(random.randint(600, 900))
 
 if __name__ == "__main__":
-    while True:
-        seo_bot()
-        # 10-15 मिनट का इंतज़ार
-        time.sleep(random.randint(600, 900))
+    asyncio.run(main())
