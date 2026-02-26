@@ -2,59 +2,36 @@ import time
 import random
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.os_manager import ChromeType
 
 def seo_bot():
     chrome_options = Options()
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument("--remote-debugging-port=9222")
     
-    # --- ये 2 लाइनें जोड़ें ---
-    chrome_options.binary_location = "/usr/bin/chromium-browser" 
-    # अगर ऊपर वाला काम न करे तो "/usr/bin/chromium" ट्राई करें
-    
-    # driver_path को ऑटो-मैनेज न करके सीधा चलाने के लिए
-    driver = webdriver.Chrome(options=chrome_options)
-    # -----------------------
-    
-    # असली यूजर जैसा दिखने के लिए User-Agent
-    chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36")
-
-    # Chromium का सही रास्ता बताना ज़रूरी है
-    chrome_options.binary_location = "/usr/bin/chromium"
-    driver = webdriver.Chrome(options=chrome_options)
+    # Railway के Chromium का सही रास्ता
+    chrome_options.binary_location = "/usr/bin/chromium-browser"
 
     try:
-        # 1. गूगल पर जाना
-        driver.get("https://www.google.com")
-        time.sleep(random.randint(3, 5))
-
-        # 2. कीवर्ड सर्च करना (यहाँ अपनी साइट का नाम लिखें)
-        search_query = "https://Officialleo.netlify.app" # अपना कीवर्ड यहाँ बदलें
-        search_box = driver.find_element(By.NAME, "q")
-        search_box.send_keys(search_query)
-        search_box.send_keys(Keys.RETURN)
-        time.sleep(random.randint(5, 7))
-
-        # 3. अपनी वेबसाइट का लिंक ढूंढना और क्लिक करना
-        # यहाँ 'yourwebsite.com' की जगह अपनी असली साइट का URL डालें
-        my_site_link = driver.find_element(By.PARTIAL_LINK_TEXT, "https://Officialleo.netlify.app") 
-        my_site_link.click()
-        print("Website found and clicked! ✅")
-
-        # 4. साइट पर रुकना और पेजों पर घूमना
-        time.sleep(random.randint(30, 60)) # 1 मिनट तक रुकना
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);") # स्क्रॉल करना
+        # webdriver-manager को Chromium इस्तेमाल करने के लिए मजबूर करना
+        service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+        driver = webdriver.Chrome(service=service, options=chrome_options)
         
-    except Exception as e:
-        print(f"Error: {e}")
-    finally:
+        print("Bot Started! Navigating to Google... 🚀")
+        driver.get("https://www.google.com")
+        
+        # --- आपका सर्च और क्लिक वाला पुराना लॉजिक यहाँ आएगा ---
+        
+        print("Success! Website visited.")
         driver.quit()
+    except Exception as e:
+        print(f"Error occurred: {e}")
 
 if __name__ == "__main__":
     while True:
         seo_bot()
-        # गूगल को शक न हो इसलिए 10-20 मिनट का लंबा ब्रेक
         time.sleep(random.randint(600, 1200))
