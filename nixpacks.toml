@@ -1,16 +1,11 @@
-[variables]
-# यह ब्राउज़र को प्रोजेक्ट के अंदर ही सुरक्षित रखेगा
-PLAYWRIGHT_BROWSERS_PATH = "/app/.cache/ms-playwright"
-
 [phases.setup]
 nixPkgs = ["python311"]
 
 [phases.install]
-# पहले लाइब्रेरी, फिर ब्राउज़र और उसकी सिस्टम डिपेंडेंसी इंस्टॉल होगी
+# यहाँ हम Force कर रहे हैं कि ब्राउज़र उसी फोल्डर में जाए जो हमने Variable में सेट किया है
 cmds = [
     "pip install -r requirements.txt",
-    "playwright install chromium",
-    "playwright install-deps"
+    "PLAYWRIGHT_BROWSERS_PATH=/app/.cache/ms-playwright playwright install chromium --with-deps"
 ]
 
 [phases.start]
