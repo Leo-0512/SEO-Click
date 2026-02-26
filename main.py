@@ -6,11 +6,18 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 def seo_bot():
-    # --- ब्राउज़र सेटिंग्स (Railway के लिए) ---
     chrome_options = Options()
-    chrome_options.add_argument('--headless') # बिना स्क्रीन के चलेगा
+    chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
+    
+    # --- ये 2 लाइनें जोड़ें ---
+    chrome_options.binary_location = "/usr/bin/chromium-browser" 
+    # अगर ऊपर वाला काम न करे तो "/usr/bin/chromium" ट्राई करें
+    
+    # driver_path को ऑटो-मैनेज न करके सीधा चलाने के लिए
+    driver = webdriver.Chrome(options=chrome_options)
+    # -----------------------
     
     # असली यूजर जैसा दिखने के लिए User-Agent
     chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36")
