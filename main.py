@@ -4,72 +4,77 @@ import subprocess
 from playwright.async_api import async_playwright
 
 async def install_playwright():
-    print("🛠️ Leo, setting up the sniper tools...")
+    print("🛠️ Leo, fixing the system for Google bypass...")
     subprocess.run(["playwright", "install", "chromium"], check=True)
     subprocess.run(["playwright", "install-deps"], check=True)
 
 async def seo_bot():
     async with async_playwright() as p:
         try:
-            browser = await p.chromium.launch(headless=True)
+            # Slow_mo बोट की रफ्तार को थोड़ा कम रखेगा ताकि शक न हो
+            browser = await p.chromium.launch(headless=True, slow_mo=random.randint(500, 1000))
         except Exception:
             await install_playwright()
-            browser = await p.chromium.launch(headless=True)
+            browser = await p.chromium.launch(headless=True, slow_mo=random.randint(500, 1000))
             
+        # असली मोबाइल/डेस्कटॉप यूजर जैसा दिखने के लिए सेटिंग्स
         context = await browser.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+            viewport={'width': 1280, 'height': 720}
         )
         page = await context.new_page()
 
         try:
-            print(f"🚀 LEO SEO SYSTEM: TARGETING officialleo.netlify.app")
-            # 1. गूगल पर जाना
+            print("🚀 LEO SYSTEM: ATTEMPTING ORGANIC SEARCH...")
+            
+            # सीधा गूगल की जगह पहले बिंग पर जाकर 'नॉर्मल' व्यवहार दिखाना
+            await page.goto("https://www.bing.com")
+            await asyncio.sleep(3)
+            
             await page.goto("https://www.google.com")
             
-            # 2. कीवर्ड सर्च करना (वही कीवर्ड जो आपने दिखाया)
+            # इंसानी तरीके से एक-एक अक्षर टाइप करना
             search_query = "officialleo.netlify.app"
-            await page.fill('textarea[name="q"]', search_query)
+            await page.type('textarea[name="q"]', search_query, delay=random.randint(150, 300))
             await page.keyboard.press("Enter")
             
-            # इंतज़ार करें जब तक रिजल्ट्स न आ जाएँ
-            await page.wait_for_selector('div#search')
-            print(f"🔍 Search results loaded for: {search_query}")
-
-            # 3. पहली लिंक को ढूँढना (Sniper Logic)
-            # चूंकि आपकी साइट पहले नंबर पर है, हम सीधे नेटलिंक वाली लिंक पर क्लिक करेंगे
-            target_link = page.locator('a[href*="officialleo.netlify.app"]').first
-            
-            if await target_link.is_visible():
-                print("🎯 Target Spotted at Rank #1! Clicking now...")
-                await target_link.click()
-                await page.wait_for_load_state("networkidle")
-                
-                # 4. साइट पर रुकना (असली इंसान की तरह बिहेव करना)
-                stay_time = random.randint(120, 180) # 2-3 मिनट रुकना बेस्ट है
-                print(f"✅ Success! Landed on officialleo.netlify.app. Staying for {stay_time}s.")
-                
-                # थोड़ा स्क्रॉल करना ताकि गूगल को लगे कि कोई पढ़ रहा है
-                await page.mouse.wheel(0, 500)
-                await asyncio.sleep(stay_time / 2)
-                await page.mouse.wheel(0, 500)
-                await asyncio.sleep(stay_time / 2)
-                
+            # चेक करना कि कहीं गूगल ने 'Sorry' पेज तो नहीं दिखाया
+            await asyncio.sleep(5)
+            if "sorry" in page.url or "captcha" in page.url:
+                print("🛑 Google blocked IP! Switching to Direct Traffic Strategy...")
+                await page.goto("https://officialleo.netlify.app", wait_until="networkidle")
             else:
-                print("⚠️ Link not visible on first spot. Visiting directly as backup...")
-                await page.goto("https://officialleo.netlify.app")
-                await asyncio.sleep(120)
+                # अगर गूगल ने ब्लॉक नहीं किया, तो लिंक ढूँढना
+                target_link = page.locator('a[href*="officialleo.netlify.app"]').first
+                if await target_link.is_visible():
+                    print("🎯 Target Found! Clicking Link...")
+                    await target_link.click()
+                else:
+                    await page.goto("https://officialleo.netlify.app")
+
+            # --- वेबसाइट पर समय बिताना (SEO Boost) ---
+            print("✅ Landed on site! Performing human actions...")
+            # 2 से 4 मिनट रुकना
+            stay_seconds = random.randint(120, 240)
+            
+            # धीरे-धीरे नीचे स्क्रॉल करना
+            for _ in range(5):
+                await page.mouse.wheel(0, random.randint(300, 600))
+                await asyncio.sleep(stay_seconds / 5)
+            
+            print(f"💎 Session Complete ({stay_seconds}s). SEO Updated!")
 
         except Exception as e:
-            print(f"❌ Leo, something went wrong: {e}")
+            print(f"❌ Leo, task interrupted: {e}")
         finally:
             await browser.close()
-            print("😴 Cycle Finished. Next run in 15-20 mins.")
+            print("😴 Resting to avoid suspicion...")
 
 async def main():
     while True:
         await seo_bot()
-        # हर 15-25 मिनट में एक नया विज़िटर भेजें
-        wait_next = random.randint(600, 900)
+        # गैप को बढ़ा दिया है ताकि गूगल को पैटर्न न मिले
+        wait_next = random.randint(1800, 3600) # 30 min to 1 hour
         await asyncio.sleep(wait_next)
 
 if __name__ == "__main__":
