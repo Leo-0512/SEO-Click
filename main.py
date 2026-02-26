@@ -4,27 +4,28 @@ from playwright.async_api import async_playwright
 
 async def seo_bot():
     async with async_playwright() as p:
+        print("🚀 LEO SYSTEM: STARTING SEO BOT...")
         try:
-            # यह कमांड खुद ब्राउज़र को सही जगह से उठा लेगी
+            # यह अपने आप सही फोल्डर से ब्राउज़र उठाएगा
             browser = await p.chromium.launch(headless=True)
             page = await browser.new_page()
             
-            print("🚀 LEO SYSTEM: SEO BOT IS ONLINE!")
             await page.goto("https://www.google.com")
-            print(f"✅ Success! Page Title: {await page.title()}")
+            print(f"✅ Success! Connected to: {await page.title()}")
             
             await browser.close()
         except Exception as e:
-            # अगर फिर भी न मिले, तो हम मैन्युअली उसे पाथ देंगे
-            print(f"📍 Manual Path searching... Error was: {e}")
+            print(f"📍 Trying Emergency Launch... Error was: {e}")
+            # अगर डिफ़ॉल्ट फेल हुआ, तो यह बैकअप पाथ यूज़ करेगा
             try:
-                # Railway का नया स्टैंडर्ड पाथ
-                path = "/app/.cache/ms-playwright/chromium-1148/chrome-linux/chrome"
-                browser = await p.chromium.launch(executable_path=path, headless=True)
-                print("✅ Found using Manual Path!")
+                browser = await p.chromium.launch(
+                    executable_path="/app/.playwright-browsers/chromium-1148/chrome-linux/chrome",
+                    headless=True
+                )
+                print("✅ Emergency Launch Success!")
                 await browser.close()
-            except Exception as final_e:
-                print(f"❌ Final Error: {final_e}")
+            except Exception as e2:
+                print(f"❌ Final attempt failed: {e2}")
 
 if __name__ == "__main__":
     asyncio.run(seo_bot())
