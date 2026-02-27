@@ -75,7 +75,7 @@ async def main():
         # अब हम 5 से 10 मिनट के बीच एक विज़िट भेजेंगे
         # यह आधे घंटे में 1 की जगह 1 घंटे में 4-6 विज़िट कर देगा
         await seo_bot()
-        wait_next = random.randint(300, 600) 
+        wait_next = random.randint(100, 150) 
         print(f"⏳ Next visit in {wait_next // 60} minutes...")
         await asyncio.sleep(wait_next)
 
